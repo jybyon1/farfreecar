@@ -3,7 +3,7 @@ import { useKeycloak } from "@react-keycloak/web";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-export default function Layout() {
+export const Layout = () => {
   const { keycloak } = useKeycloak();
 
   const dispatch = useDispatch();
@@ -21,4 +21,4 @@ export default function Layout() {
     name: "",
     phone: "",
   });
-}
+};

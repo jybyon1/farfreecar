@@ -11,15 +11,17 @@ import {
 } from "@chakra-ui/react";
 import farfreecar from "../../assets/images/farfreecar.png";
 import { FiLink } from "react-icons/fi";
-import Header from "../../component/layout/Header";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import { BsCalendarCheck } from "react-icons/bs";
+import { Header } from "../../component/layout/Header";
+import { SearchBox } from "../../component/SearchBox";
 
 export default function Main() {
-  const [goDate, setGoDate] = useState(new Date() || null);
+  const [goDate, setGoDate] = useState(new Date() || undefined);
+  const [showBox, setShowBox] = useState(false);
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <Box
       onClick={onClick}
@@ -53,9 +55,16 @@ export default function Main() {
             </Text>
           </Box>
         </Box>
-        <Box bg="white" borderRadius="35px" w="1100px" h="180px" m="auto">
-          <Box borderBottom="1px solid" borderBottomColor="gray.200" h="50px" />
-          <Box display="flex" p="1.5%" pr="5%">
+        <Box
+          bg="white"
+          borderRadius="20px"
+          w="1000px"
+          h="150px"
+          m="auto"
+          boxShadow="3px 3px 3px 3px rgb(0 0 0 / 5%)"
+        >
+          <Box borderBottom="1px solid" borderBottomColor="gray.200" h="40px" />
+          <Box display="flex" pt="0.5%" pr="5%">
             <HStack w="100%">
               <VStack w="300px">
                 <Text fontSize="35px">ICN</Text>
@@ -125,12 +134,16 @@ export default function Main() {
                 bg="#FBBC05"
                 fontSize="20px"
                 w="150px"
+                onClick={() => {
+                  setShowBox(true);
+                }}
               >
                 Search
               </Button>
             </HStack>
           </Box>
         </Box>
+        {showBox && <SearchBox />}
       </Box>
     </>
   );

@@ -17,7 +17,7 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import { BsCalendarCheck } from "react-icons/bs";
 import { Header } from "../../component/layout/Header";
-import { SearchBox } from "../../component/SearchBox";
+import { SearchBox } from "../../page/searchBox/SearchBox";
 
 export default function Main() {
   const [goDate, setGoDate] = useState(new Date() || undefined);

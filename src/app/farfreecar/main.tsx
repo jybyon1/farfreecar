@@ -5,6 +5,10 @@ import {
   HStack,
   Icon,
   Image,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  InputLeftElement,
   Select,
   Text,
   VStack,
@@ -16,26 +20,29 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import { BsCalendarCheck } from "react-icons/bs";
+import { BiTime } from "react-icons/bi";
 import { Header } from "../../component/layout/Header";
 import { SearchBox } from "../../page/searchBox/SearchBox";
 
 export default function Main() {
-  const [goDate, setGoDate] = useState(new Date() || undefined);
+  const [goDate, setGoDate] = useState<Date | null>(null);
+  const [goHour, setGoHour] = useState<Date | null>(null);
   const [showBox, setShowBox] = useState(false);
-  const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <Box
-      onClick={onClick}
-      ref={ref}
-      bg="gray.100"
-      borderRadius="5px"
-      w="200px"
-      h="35px"
-      p="6px"
-      display="flex"
-    >
-      <Icon as={BsCalendarCheck} m="2% 4% 2% 2%" />
-      <Text>{value}</Text>
-    </Box>
+
+  const CustomDateInput = forwardRef(({ value, onClick, placeholder }, ref) => (
+    <InputGroup size="md" onClick={onClick} ref={ref}>
+      <InputLeftElement
+        pointerEvents="none"
+        children={<Icon as={BsCalendarCheck} />}
+      />
+      <Input type="text" value={value} placeholder={placeholder} readOnly />
+    </InputGroup>
+  ));
+  const CustomHourInput = forwardRef(({ value, onClick, placeholder }, ref) => (
+    <InputGroup size="md" onClick={onClick} ref={ref}>
+      <InputLeftElement pointerEvents="none" children={<Icon as={BiTime} />} />
+      <Input type="text" value={value} placeholder={placeholder} readOnly />
+    </InputGroup>
   ));
   return (
     <>
@@ -104,20 +111,20 @@ export default function Main() {
               </VStack>
               <Box w="300px">
                 <DatePicker
-                  placeholderText="가는날"
+                  placeholderText="가는 날"
                   selected={goDate}
                   onChange={(date: Date) => setGoDate(date)}
                   locale={ko}
                   dateFormat="yyyy년 MM월 dd일"
                   minDate={new Date()}
-                  customInput={<CustomInput />}
+                  customInput={<CustomDateInput />}
                 />
               </Box>
               <Box w="300px">
                 <DatePicker
-                  placeholderText="가는시간"
-                  selected={goDate}
-                  onChange={(date: Date) => setGoDate(date)}
+                  placeholderText="가는 시간"
+                  selected={goHour}
+                  onChange={(date: Date) => setGoHour(date)}
                   locale={ko}
                   showTimeSelect
                   showTimeSelectOnly
@@ -125,7 +132,7 @@ export default function Main() {
                   dateFormat="h:mm aa"
                   timeIntervals={10}
                   timeCaption="time"
-                  customInput={<CustomInput />}
+                  customInput={<CustomHourInput />}
                 />
               </Box>
               <Button
@@ -135,7 +142,9 @@ export default function Main() {
                 fontSize="20px"
                 w="150px"
                 onClick={() => {
-                  setShowBox(true);
+                  if (goDate && goHour) {
+                    setShowBox(true);
+                  }
                 }}
               >
                 Search

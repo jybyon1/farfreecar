@@ -7,7 +7,6 @@ import {
   Image,
   Input,
   InputGroup,
-  InputLeftAddon,
   InputLeftElement,
   Select,
   Text,
@@ -23,10 +22,20 @@ import { BsCalendarCheck } from "react-icons/bs";
 import { BiTime } from "react-icons/bi";
 import { Header } from "../../component/layout/Header";
 import { SearchBox } from "../../page/searchBox/SearchBox";
+import { useForm } from "react-hook-form";
 
 export default function Main() {
+  const handleRegister = (value: any) => {
+    console.log(value);
+  };
+  const { register, handleSubmit } = useForm();
+
   const [goDate, setGoDate] = useState<Date | null>(null);
   const [goHour, setGoHour] = useState<Date | null>(null);
+  const [startArea, setStartArea] = useState<string>("");
+  const [endArea, setEndArea] = useState<string>("");
+
+  const [data, setData] = useState("");
   const [showBox, setShowBox] = useState(false);
 
   const CustomDateInput = forwardRef(({ value, onClick, placeholder }, ref) => (
@@ -71,86 +80,113 @@ export default function Main() {
           boxShadow="3px 3px 3px 3px rgb(0 0 0 / 5%)"
         >
           <Box borderBottom="1px solid" borderBottomColor="gray.200" h="40px" />
-          <Box display="flex" pt="0.5%" pr="5%">
-            <HStack w="100%">
-              <VStack w="300px">
-                <Text fontSize="35px">ICN</Text>
-                <Select
+          <form
+            onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}
+          >
+            <Box display="flex" pt="0.5%" pr="5%">
+              <HStack w="100%">
+                <VStack w="300px">
+                  <Text fontSize="35px">ICN</Text>
+                  <Select
+                    w="150px"
+                    textAlign="center"
+                    size="sm"
+                    placeholder="출발 지역"
+                    borderColor="rgb(0 0 0 / 0%) !important"
+                    {...register("start_area", {
+                      required: true,
+                      onChange: (e) => {
+                        setStartArea(e.target.value);
+                      },
+                    })}
+                    value={startArea}
+                  >
+                    <option value="서울">서울</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                  </Select>
+                </VStack>
+                <Box>
+                  <Icon
+                    as={FiLink}
+                    fontSize="30px"
+                    borderRadius="20px"
+                    color="blue.300"
+                  />
+                </Box>
+                <VStack w="300px">
+                  <Text fontSize="35px">PUS</Text>
+                  <Select
+                    w="150px"
+                    textAlign="center"
+                    size="sm"
+                    placeholder="도착 지역"
+                    borderColor="rgb(0 0 0 / 0%) !important"
+                    {...register("end_area", {
+                      required: true,
+                      onChange: (e) => {
+                        setEndArea(e.target.value);
+                      },
+                    })}
+                    value={startArea}
+                  >
+                    <option value="부산">부산</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                  </Select>
+                </VStack>
+                <Box w="300px">
+                  <DatePicker
+                    id="go_date"
+                    placeholderText="가는 날"
+                    selected={goDate}
+                    onChange={(date: Date) => setGoDate(date)}
+                    locale={ko}
+                    dateFormat="yyyy년 MM월 dd일"
+                    minDate={new Date()}
+                    customInput={<CustomDateInput />}
+                  />
+                </Box>
+                <Box w="300px">
+                  <DatePicker
+                    id="go_hour"
+                    placeholderText="가는 시간"
+                    selected={goHour}
+                    onChange={(date: Date) => setGoHour(date)}
+                    locale={ko}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeFormat="HH:mm"
+                    dateFormat="h:mm aa"
+                    timeIntervals={10}
+                    timeCaption="time"
+                    customInput={<CustomHourInput />}
+                  />
+                </Box>
+                <Button
+                  size="lg"
+                  color="white"
+                  bg="#FBBC05"
+                  fontSize="20px"
                   w="150px"
-                  textAlign="center"
-                  size="sm"
-                  placeholder="출발 지역"
-                  borderColor="rgb(0 0 0 / 0%) !important"
+                  onClick={() => {
+                    if (goDate && goHour) {
+                      setShowBox(true);
+                    }
+                    const info = {
+                      start_area: startArea,
+                      end_area: endArea,
+                      goDate: goDate,
+                      goHour: goHour,
+                    };
+                    handleRegister(info);
+                  }}
                 >
-                  <option value="option1">서울</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                </Select>
-              </VStack>
-              <Box>
-                <Icon
-                  as={FiLink}
-                  fontSize="30px"
-                  borderRadius="20px"
-                  color="blue.300"
-                />
-              </Box>
-              <VStack w="300px">
-                <Text fontSize="35px">PUS</Text>
-                <Select
-                  w="150px"
-                  textAlign="center"
-                  size="sm"
-                  placeholder="도착 지역"
-                  borderColor="rgb(0 0 0 / 0%) !important"
-                >
-                  <option value="option1">부산</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                </Select>
-              </VStack>
-              <Box w="300px">
-                <DatePicker
-                  placeholderText="가는 날"
-                  selected={goDate}
-                  onChange={(date: Date) => setGoDate(date)}
-                  locale={ko}
-                  dateFormat="yyyy년 MM월 dd일"
-                  minDate={new Date()}
-                  customInput={<CustomDateInput />}
-                />
-              </Box>
-              <Box w="300px">
-                <DatePicker
-                  placeholderText="가는 시간"
-                  selected={goHour}
-                  onChange={(date: Date) => setGoHour(date)}
-                  locale={ko}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeFormat="HH:mm"
-                  dateFormat="h:mm aa"
-                  timeIntervals={10}
-                  timeCaption="time"
-                  customInput={<CustomHourInput />}
-                />
-              </Box>
-              <Button
-                size="lg"
-                color="white"
-                bg="#FBBC05"
-                fontSize="20px"
-                w="150px"
-                onClick={() => {
-                  if (goDate && goHour) {
-                    setShowBox(true);
-                  }
-                }}
-              >
-                Search
-              </Button>
-            </HStack>
-          </Box>
+                  Search
+                </Button>
+              </HStack>
+            </Box>
+          </form>
         </Box>
         {showBox && <SearchBox />}
       </Box>

@@ -1,6 +1,6 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { SearchBoxCom } from "../../component/Box/searchBoxcom";
+import React from "react";
+import { SearchBoxCom } from "../../component/Box/searchBoxCom";
 import { ImAirplane } from "react-icons/im";
 import { IoMdTrain } from "react-icons/io";
 import { MdDirectionsBus } from "react-icons/md";

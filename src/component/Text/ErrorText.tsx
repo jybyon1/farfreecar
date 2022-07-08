@@ -1,8 +1,8 @@
 import { Text, TextProps } from "@chakra-ui/react";
-import React, { ReactNode } from "react";
+import React from "react";
 
 type ErrorTextProps = {
-  children: ReactNode;
+  children: JSX.Element | JSX.Element[];
 };
 
 export const ErrorText = ({

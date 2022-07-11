@@ -62,9 +62,11 @@ export const FormBox = () => {
     </InputGroup>
   ));
   const onSubmit = (data: any) => console.log(data);
-
-  //에러 메세지 다루는 함수
-
+  /*form 상태 바뀔때 리랜더링 
+  useEffect(() => {
+    setShowBox(false);
+  }, [goDate, goHour, startArea, endArea]);
+*/
   return (
     <>
       <Box

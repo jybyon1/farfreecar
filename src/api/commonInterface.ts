@@ -1,10 +1,18 @@
-export interface Airplain {
-  resultCode: number | undefined;
-  resultMsg: string | undefined;
-  airlineNm: string;
-  depPlandTime: Date;
-  arrPlandTime: Date;
-  economyCharge: number;
-  depAirportNm: string;
-  arrAirportNm: string;
+export interface IAirplain {
+  airlineNm: string | undefined;
+  arrPlandTime: string | undefined;
+  depPlandTime: string | undefined;
+  vihicleId: string | undefined;
+  economyCharge: string | undefined;
+}
+
+export interface IForm {
+  depAirportId: string;
+  arrAirportId: string;
+  depPlandTime: string;
+}
+
+export interface IAirport {
+  airportId: string;
+  airportNm: string;
 }

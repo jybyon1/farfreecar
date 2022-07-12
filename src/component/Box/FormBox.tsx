@@ -20,31 +20,37 @@ import { BsCalendarCheck } from "react-icons/bs";
 import { BiTime } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { SearchBox } from "../../page/searchBox/SearchBox";
-/*
-export interface IFrom {
-  start_date: Date | null;
-  start_hour: Date | null;
-  start_area: string;
-  end_area: string;
-}
-*/
+import { NewInterface } from "../../api/ApiInterface";
+//import { IAirport } from "../../api/commonInterface";
+
 export const FormBox = () => {
   const { register, handleSubmit } = useForm();
-  /*
-  const [form, setForm] = useState<IFrom>({
-    start_date: null,
-    start_hour: null,
-    start_area: "",
-    end_area: "",
-  });
-  */
+
   const [goDate, setGoDate] = useState<Date | null>(null);
   const [goHour, setGoHour] = useState<Date | null>(null);
   const [startArea, setStartArea] = useState<string>("");
   const [endArea, setEndArea] = useState<string>("");
-
-  //const [data, setData] = useState("");
+  /*
+  const [airportNm, setAirportNm] = useState<IAirport[]>({
+    airportId: "",
+    airportNm: "",
+  });
+*/
   const [showBox, setShowBox] = useState<boolean>(false);
+
+  const GetAirportId = () => {
+    const service = NewInterface();
+    service.GetAirportId().then((res) => {
+      console.log("res11", res);
+      if (res) {
+        //setAirportNm(res)
+      }
+    });
+  };
+
+  useState(() => {
+    GetAirportId();
+  });
 
   const CustomDateInput = forwardRef(({ value, onClick, placeholder }, ref) => (
     <InputGroup size="md" onClick={onClick} ref={ref}>
@@ -97,9 +103,7 @@ export const FormBox = () => {
                   })}
                   value={startArea}
                 >
-                  <option value="서울">서울</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
+                  {/*<option value={data.airportId}>{data.airportNm}</option>;*/}
                 </Select>
               </VStack>
               <Box>
@@ -126,9 +130,7 @@ export const FormBox = () => {
                   })}
                   value={endArea}
                 >
-                  <option value="부산">부산</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
+                  <option value="NAARKPC">부산</option>
                 </Select>
                 {/*errors.end_area.type === 'required' && <Text>도착지역을 선택하세요</Text>*/}
               </VStack>
@@ -156,6 +158,7 @@ export const FormBox = () => {
                   timeFormat="HH:mm"
                   timeIntervals={10}
                   timeCaption="time"
+                  dateFormat="h:mm aa"
                   customInput={<CustomHourInput />}
                 />
               </Box>
@@ -169,15 +172,6 @@ export const FormBox = () => {
                   if (startArea !== "" && endArea !== "" && goDate && goHour) {
                     setShowBox(true);
                   }
-                  /*
-                  const info = {
-                    start_area: startArea,
-                    end_area: endArea,
-                    goDate: goDate,
-                    goHour: goHour,
-                  };
-                  handleRegister(info);
-                  */
                 }}
                 type="submit"
               >
@@ -187,7 +181,14 @@ export const FormBox = () => {
           </Box>
         </form>
       </Box>
-      {showBox && <SearchBox />}
+      {showBox && goDate && (
+        <SearchBox
+          arrAirportId={startArea}
+          depAirportId={endArea}
+          depPlandTime="20201201"
+        />
+      )}
+      {console.log("resssssss:", startArea, endArea, goDate, goHour)}
     </>
   );
 };

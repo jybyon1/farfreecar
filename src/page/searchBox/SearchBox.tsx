@@ -1,12 +1,23 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { SearchBoxCom } from "../../component/Box/searchBoxCom";
 import { ImAirplane } from "react-icons/im";
 import { IoMdTrain } from "react-icons/io";
 import { MdDirectionsBus } from "react-icons/md";
+import { NewInterface } from "../../api/ApiInterface";
+import { IForm } from "../../api/commonInterface";
 //import PerfectScrollbar from "react-perfect-scrollbar";
 
-export const SearchBox = (): JSX.Element => {
+export const SearchBox = (info: IForm): JSX.Element => {
+  const getAirPlaneAPI = () => {
+    const service = NewInterface();
+    service.GetAirplane(info).then((res) => {
+      console.log("res", res);
+    });
+  };
+  useState(() => {
+    getAirPlaneAPI();
+  });
   /*
   const [scrollH, setScrollH] = useState<PerfectScrollbar | null>();
   useEffect(() => {

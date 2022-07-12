@@ -1,28 +1,16 @@
 import { Box, HStack, Icon, Text } from "@chakra-ui/react";
 
-import React, { useState } from "react";
+import React from "react";
 import { IconType } from "react-icons";
-import { NewInterface } from "../../api/ApiInterface";
-import { Airplain } from "../../api/commonInterface";
+import { IAirplain } from "../../api/commonInterface";
 
 interface ISearch {
   title: string;
   icon: IconType;
-  data?: Airplain;
+  data?: IAirplain;
 }
 
 export const SearchBoxCom = (props: ISearch): JSX.Element => {
-  const getAirPlaneAPI = () => {
-    const service = NewInterface();
-    service.GetAirplane().then((res) => {
-      console.log("res", res);
-      //setAirInfo({ ...res });
-    });
-  };
-  useState(() => {
-    getAirPlaneAPI();
-  });
-
   return (
     <Box p="5%">
       <Text fontSize="18px">{props.title}</Text>

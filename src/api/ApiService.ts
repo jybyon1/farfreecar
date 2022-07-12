@@ -1,6 +1,6 @@
 import { TotalApi } from "./ApiInterface";
 import axios, { AxiosRequestConfig } from "axios";
-import { Airplain } from "./commonInterface";
+import { IAirplain, IAirport, IForm } from "./commonInterface";
 
 export class ApiService implements TotalApi {
   //constructor() {}
@@ -8,7 +8,6 @@ export class ApiService implements TotalApi {
   private static async executeRequest(
     path: string,
     config?: AxiosRequestConfig
-    
   ): Promise<Record<string, unknown>> {
     try {
       const result = await axios(path, config);
@@ -23,16 +22,36 @@ export class ApiService implements TotalApi {
     return {};
   }
 
-  async GetAirplane(): Promise<Airplain | undefined> {
-    const key: string =
-      "rVYQ1JhwygEEy01jEYcluaNuNLgooHPLUqaIlyvpJsQmWpmzBXHAI1BeioYDRetfdX92AZoxdk9PqTeuP7A9Xg%3D%3D";
-    const response = await axios.get(
-      "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getFlightOpratInfoList?serviceKey=" +
-        key
-    );
-    console.log("GetAirplane", response);
-    if (response && response.status === 200 && response.data) {
-      return response.data as Airplain;
+  async GetAirplane(form: IForm): Promise<IAirplain | undefined> {
+    const url: string =
+      "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getFlightOpratInfoList?serviceKey=rVYQ1JhwygEEy01jEYcluaNuNLgooHPLUqaIlyvpJsQmWpmzBXHAI1BeioYDRetfdX92AZoxdk9PqTeuP7A9Xg%3D%3D" +
+      "&depAirportId=" +
+      form.depAirportId +
+      "&arrAirportId=" +
+      form.arrAirportId +
+      "&depPlandTime=" +
+      form.depPlandTime;
+    const response = await axios.get(url).then((data) => {
+      const res = data.data;
+      console.log("res", res);
+      return res as IAirplain;
+    });
+    if (response) {
+      return response as IAirplain;
+    }
+    return undefined;
+  }
+
+  async GetAirportId(): Promise<IAirport[] | undefined> {
+    const url: string =
+      "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getArprtList?serviceKey=rVYQ1JhwygEEy01jEYcluaNuNLgooHPLUqaIlyvpJsQmWpmzBXHAI1BeioYDRetfdX92AZoxdk9PqTeuP7A9Xg%3D%3D";
+    const response = await axios.get(url).then((data) => {
+      const res = data.data;
+      console.log("res", res);
+      return res as IAirport[];
+    });
+    if (response) {
+      return response as IAirport[];
     }
     return undefined;
   }

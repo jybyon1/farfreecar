@@ -21,7 +21,7 @@ import { BiTime } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { SearchBox } from "../../page/searchBox/SearchBox";
 import { NewInterface } from "../../api/ApiInterface";
-//import { IAirport } from "../../api/commonInterface";
+import { IAirport, ResponseObject } from "../../api/commonInterface";
 
 export const FormBox = () => {
   const { register, handleSubmit } = useForm();
@@ -31,19 +31,18 @@ export const FormBox = () => {
   const [startArea, setStartArea] = useState<string>("");
   const [endArea, setEndArea] = useState<string>("");
   /*
-  const [airportNm, setAirportNm] = useState<IAirport[]>({
-    airportId: "",
-    airportNm: "",
-  });
+  const [airportNm, setAirportNm] = useState<
+    ResponseObject<IAirport[]> | undefined
+  >(undefined);
 */
   const [showBox, setShowBox] = useState<boolean>(false);
 
   const GetAirportId = () => {
     const service = NewInterface();
-    service.GetAirportId().then((res) => {
+    service.GetAirportId<ResponseObject<IAirport[]>>().then((res) => {
       console.log("res11", res);
       if (res) {
-        //setAirportNm(res)
+        //setAirportNm(res);
       }
     });
   };
@@ -103,7 +102,12 @@ export const FormBox = () => {
                   })}
                   value={startArea}
                 >
-                  {/*<option value={data.airportId}>{data.airportNm}</option>;*/}
+                  {/*airportNm &&
+                    airportNm.map((data) => (
+                      <option value={data.airportId} key={data.airportNm}>
+                        {data.airportNm}
+                      </option>
+                    ))*/}
                 </Select>
               </VStack>
               <Box>

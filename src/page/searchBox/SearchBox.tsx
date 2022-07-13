@@ -25,6 +25,7 @@ export const SearchBox = (info: IForm): JSX.Element => {
       scrollH.updateScroll();
     }
   }, [scrollH]);
+
   */
   return (
     <Box bg="white" w="1500px" m="auto" minH="400px" mt="2%">

@@ -1,6 +1,6 @@
 import { TotalApi } from "./ApiInterface";
 import axios, { AxiosRequestConfig } from "axios";
-import { IAirplain, IAirport, IForm } from "./commonInterface";
+import { IAirplain, IForm } from "./commonInterface";
 
 export class ApiService implements TotalApi {
   //constructor() {}
@@ -33,7 +33,7 @@ export class ApiService implements TotalApi {
       form.depPlandTime;
     const response = await axios.get(url).then((data) => {
       const res = data.data;
-      console.log("res", res);
+      //console.log("res", res);
       return res as IAirplain;
     });
     if (response) {
@@ -42,16 +42,16 @@ export class ApiService implements TotalApi {
     return undefined;
   }
 
-  async GetAirportId(): Promise<IAirport[] | undefined> {
+  async GetAirportId<T>(): Promise<T[] | undefined> {
     const url: string =
       "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getArprtList?serviceKey=rVYQ1JhwygEEy01jEYcluaNuNLgooHPLUqaIlyvpJsQmWpmzBXHAI1BeioYDRetfdX92AZoxdk9PqTeuP7A9Xg%3D%3D";
     const response = await axios.get(url).then((data) => {
       const res = data.data;
       console.log("res", res);
-      return res as IAirport[];
+      return res as T[];
     });
     if (response) {
-      return response as IAirport[];
+      return response as T[];
     }
     return undefined;
   }

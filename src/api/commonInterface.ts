@@ -1,3 +1,6 @@
+export interface ResponseObject<T> {
+  response: T[];
+}
 export interface IAirplain {
   airlineNm: string | undefined;
   arrPlandTime: string | undefined;

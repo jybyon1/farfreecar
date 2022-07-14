@@ -1,5 +1,5 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SearchBoxCom } from "../../component/Box/searchBoxCom";
 import { ImAirplane } from "react-icons/im";
 import { IoMdTrain } from "react-icons/io";
@@ -19,9 +19,9 @@ export const SearchBox = (info: IForm): JSX.Element => {
   const [searchInfo, setSearchInfo] = useState<IAirplain[] | undefined>(
     undefined
   );
-  useState(() => {
+  useEffect(() => {
     getAirPlaneAPI();
-  });
+  }, [searchInfo]);
   /*
   const [scrollH, setScrollH] = useState<PerfectScrollbar | null>();
   useEffect(() => {

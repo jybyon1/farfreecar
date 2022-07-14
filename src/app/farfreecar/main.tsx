@@ -11,7 +11,7 @@ export default function Main() {
     <>
       <Box h="100vh">
         <Header />
-        <Box ml="37%" display="flex" pos="relative" pt="5%">
+        <Box ml="37%" display="flex" pos="relative" pt="4%">
           <Image src={farfreecar} width="10%" ml="35%" pos="absolute" />
           <Box mt="2%" display="flex">
             <Logo logo="Far" color="#4285F4" />

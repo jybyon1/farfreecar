@@ -1,12 +1,19 @@
 export interface ResponseObject<T> {
-  response: T[];
+  response: {
+    header: { resultCode: string; resultMsg: string };
+    body: {
+      items: {
+        item: T[];
+      };
+    };
+  };
 }
 export interface IAirplain {
-  airlineNm: string | undefined;
-  arrPlandTime: string | undefined;
-  depPlandTime: string | undefined;
-  vihicleId: string | undefined;
-  economyCharge: string | undefined;
+  airlineNm: string;
+  arrPlandTime: string;
+  depPlandTime: string;
+  vihicleId: string;
+  economyCharge?: string;
 }
 
 export interface IForm {

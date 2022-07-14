@@ -1,9 +1,9 @@
 import { ApiService } from "./ApiService";
-import { IAirplain, IForm } from "./commonInterface";
+import { IAirplain, IAirport, IForm } from "./commonInterface";
 
 export interface TotalApi {
-  GetAirportId<T>(): Promise<T[] | undefined>;
-  GetAirplane(form: IForm): Promise<IAirplain | undefined>;
+  GetAirportId(): Promise<IAirport[] | undefined>;
+  GetAirplane(form: IForm): Promise<IAirplain[] | undefined>;
   //GetTrain(): Promise<string | undefined>;
   //GetBus(): Promise<string | undefined>;
 }

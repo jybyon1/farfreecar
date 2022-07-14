@@ -1,6 +1,6 @@
 import { TotalApi } from "./ApiInterface";
 import axios, { AxiosRequestConfig } from "axios";
-import { IAirplain, IForm } from "./commonInterface";
+import { IAirplain, IAirport, IForm } from "./commonInterface";
 
 export class ApiService implements TotalApi {
   //constructor() {}
@@ -22,7 +22,7 @@ export class ApiService implements TotalApi {
     return {};
   }
 
-  async GetAirplane(form: IForm): Promise<IAirplain | undefined> {
+  async GetAirplane(form: IForm): Promise<IAirplain[] | undefined> {
     const url: string =
       "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getFlightOpratInfoList?serviceKey=rVYQ1JhwygEEy01jEYcluaNuNLgooHPLUqaIlyvpJsQmWpmzBXHAI1BeioYDRetfdX92AZoxdk9PqTeuP7A9Xg%3D%3D" +
       "&depAirportId=" +
@@ -33,25 +33,26 @@ export class ApiService implements TotalApi {
       form.depPlandTime;
     const response = await axios.get(url).then((data) => {
       const res = data.data;
-      //console.log("res", res);
-      return res as IAirplain;
+      console.log("res", res);
+      return res;
     });
     if (response) {
-      return response as IAirplain;
+      return response.response.body.items.item as IAirplain[];
     }
     return undefined;
   }
 
-  async GetAirportId<T>(): Promise<T[] | undefined> {
+  async GetAirportId(): Promise<IAirport[] | undefined> {
     const url: string =
       "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getArprtList?serviceKey=rVYQ1JhwygEEy01jEYcluaNuNLgooHPLUqaIlyvpJsQmWpmzBXHAI1BeioYDRetfdX92AZoxdk9PqTeuP7A9Xg%3D%3D";
     const response = await axios.get(url).then((data) => {
       const res = data.data;
-      console.log("res", res);
-      return res as T[];
+      //console.log("res", res);
+      return res;
     });
+
     if (response) {
-      return response as T[];
+      return response.response.body.items.item as IAirport[];
     }
     return undefined;
   }

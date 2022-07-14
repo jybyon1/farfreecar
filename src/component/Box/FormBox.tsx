@@ -11,7 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiLink } from "react-icons/fi";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
@@ -21,7 +21,8 @@ import { BiTime } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { SearchBox } from "../../page/searchBox/SearchBox";
 import { NewInterface } from "../../api/ApiInterface";
-import { IAirport, ResponseObject } from "../../api/commonInterface";
+import { IAirport, IForm } from "../../api/commonInterface";
+import moment from "moment";
 
 export const FormBox = () => {
   const { register, handleSubmit } = useForm();
@@ -30,26 +31,25 @@ export const FormBox = () => {
   const [goHour, setGoHour] = useState<Date | null>(null);
   const [startArea, setStartArea] = useState<string>("");
   const [endArea, setEndArea] = useState<string>("");
-  /*
-  const [airportNm, setAirportNm] = useState<
-    ResponseObject<IAirport[]> | undefined
-  >(undefined);
-*/
+  const [airportNm, setAirportNm] = useState<IAirport[] | undefined>(undefined);
+
+  const [form, setForm] = useState<IForm>({
+    depAirportId: "",
+    arrAirportId: "",
+    depPlandTime: "",
+  });
+
   const [showBox, setShowBox] = useState<boolean>(false);
 
   const GetAirportId = () => {
     const service = NewInterface();
-    service.GetAirportId<ResponseObject<IAirport[]>>().then((res) => {
+    service.GetAirportId().then((res) => {
       console.log("res11", res);
       if (res) {
-        //setAirportNm(res);
+        setAirportNm(res);
       }
     });
   };
-
-  useState(() => {
-    GetAirportId();
-  });
 
   const CustomDateInput = forwardRef(({ value, onClick, placeholder }, ref) => (
     <InputGroup size="md" onClick={onClick} ref={ref}>
@@ -67,11 +67,11 @@ export const FormBox = () => {
     </InputGroup>
   ));
   const onSubmit = (data: any) => console.log(data);
-  /*form 상태 바뀔때 리랜더링 
+  //form 상태 바뀔때 리랜더링
   useEffect(() => {
-    setShowBox(false);
-  }, [goDate, goHour, startArea, endArea]);
-*/
+    GetAirportId();
+  }, [startArea, endArea]);
+
   return (
     <>
       <Box
@@ -102,12 +102,12 @@ export const FormBox = () => {
                   })}
                   value={startArea}
                 >
-                  {/*airportNm &&
+                  {airportNm &&
                     airportNm.map((data) => (
                       <option value={data.airportId} key={data.airportNm}>
                         {data.airportNm}
                       </option>
-                    ))*/}
+                    ))}
                 </Select>
               </VStack>
               <Box>
@@ -134,7 +134,12 @@ export const FormBox = () => {
                   })}
                   value={endArea}
                 >
-                  <option value="NAARKPC">부산</option>
+                  {airportNm &&
+                    airportNm.map((data) => (
+                      <option value={data.airportId} key={data.airportNm}>
+                        {data.airportNm}
+                      </option>
+                    ))}
                 </Select>
                 {/*errors.end_area.type === 'required' && <Text>도착지역을 선택하세요</Text>*/}
               </VStack>
@@ -143,7 +148,13 @@ export const FormBox = () => {
                   id="go_date"
                   placeholderText="가는 날"
                   selected={goDate}
-                  onChange={(date: Date) => setGoDate(date)}
+                  onChange={(date: Date) => {
+                    setGoDate(date);
+                    setForm({
+                      ...form,
+                      depPlandTime: moment(date).format("YYYYMMDD"),
+                    });
+                  }}
                   locale={ko}
                   dateFormat="yyyy년 MM월 dd일"
                   minDate={new Date()}
@@ -189,10 +200,17 @@ export const FormBox = () => {
         <SearchBox
           arrAirportId={startArea}
           depAirportId={endArea}
-          depPlandTime="20201201"
+          depPlandTime={form.depPlandTime}
         />
       )}
-      {console.log("resssssss:", startArea, endArea, goDate, goHour)}
+      {console.log(
+        "resssssss:",
+        startArea,
+        endArea,
+        goDate,
+        goHour,
+        form.depPlandTime
+      )}
     </>
   );
 };

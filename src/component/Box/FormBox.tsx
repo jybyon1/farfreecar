@@ -87,7 +87,14 @@ export const FormBox = () => {
           <Box display="flex" pt="0.5%" pr="5%">
             <HStack w="100%">
               <VStack w="300px">
-                <Text fontSize="35px">ICN</Text>
+                {startArea &&
+                  airportNm &&
+                  airportNm.map(
+                    (data) =>
+                      startArea === data.airportNm && (
+                        <Text fontSize="35px">{data.airportId}</Text>
+                      )
+                  )}
                 <Select
                   w="150px"
                   textAlign="center"

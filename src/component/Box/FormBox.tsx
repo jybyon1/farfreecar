@@ -23,6 +23,7 @@ import { SearchBox } from "../../page/searchBox/SearchBox";
 import { NewInterface } from "../../api/ApiInterface";
 import { IAirport, IForm } from "../../api/commonInterface";
 import moment from "moment";
+import Utils from "../../service/util";
 
 export const FormBox = () => {
   const { register, handleSubmit } = useForm();
@@ -87,7 +88,11 @@ export const FormBox = () => {
           <Box display="flex" pt="0.5%" pr="5%">
             <HStack w="100%">
               <VStack w="300px">
-                <Text fontSize="35px">{startArea}</Text>
+                {startArea ? (
+                  <Text fontSize="35px">{Utils.printairportNm(startArea)}</Text>
+                ) : (
+                  <Text fontSize="35px">출발</Text>
+                )}
                 <Select
                   w="150px"
                   textAlign="center"
@@ -119,7 +124,11 @@ export const FormBox = () => {
                 />
               </Box>
               <VStack w="300px">
-                <Text fontSize="35px">{endArea}</Text>
+                {endArea ? (
+                  <Text fontSize="35px">{Utils.printairportNm(endArea)}</Text>
+                ) : (
+                  <Text fontSize="35px">도착</Text>
+                )}
                 <Select
                   w="150px"
                   textAlign="center"

@@ -21,7 +21,7 @@ export class ApiService implements TotalApi {
 
     return {};
   }
-
+  //비행기 운항 정보 가져오기
   async GetAirplane(form: IForm): Promise<IAirplain[] | undefined> {
     const url: string =
       "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getFlightOpratInfoList?serviceKey=rVYQ1JhwygEEy01jEYcluaNuNLgooHPLUqaIlyvpJsQmWpmzBXHAI1BeioYDRetfdX92AZoxdk9PqTeuP7A9Xg%3D%3D" +
@@ -41,7 +41,7 @@ export class ApiService implements TotalApi {
     }
     return undefined;
   }
-
+  //지역 가져오기
   async GetAirportId(): Promise<IAirport[] | undefined> {
     const url: string =
       "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getArprtList?serviceKey=rVYQ1JhwygEEy01jEYcluaNuNLgooHPLUqaIlyvpJsQmWpmzBXHAI1BeioYDRetfdX92AZoxdk9PqTeuP7A9Xg%3D%3D";

@@ -26,7 +26,17 @@ import moment from "moment";
 import Utils from "../../service/util";
 
 export const FormBox = () => {
-  const { register, handleSubmit } = useForm();
+  interface IInputField {
+    goDate: Date;
+    goHour: Date;
+    startArea: string;
+    endArea: string;
+  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IInputField>();
 
   const [goDate, setGoDate] = useState<Date | null>(null);
   const [goHour, setGoHour] = useState<Date | null>(null);
@@ -99,7 +109,7 @@ export const FormBox = () => {
                   size="sm"
                   placeholder="출발 지역"
                   borderColor="rgb(0 0 0 / 0%) !important"
-                  {...register("start_area", {
+                  {...register("startArea", {
                     required: true,
                     onChange: (e) => {
                       setStartArea(e.target.value);
@@ -114,6 +124,13 @@ export const FormBox = () => {
                       </option>
                     ))}
                 </Select>
+                <Box>
+                  {errors.startArea?.type === "required" && (
+                    <Text color="red" fontSize="12px">
+                      출발지역을 입력하세요
+                    </Text>
+                  )}
+                </Box>
               </VStack>
               <Box>
                 <Icon
@@ -135,7 +152,7 @@ export const FormBox = () => {
                   size="sm"
                   placeholder="도착 지역"
                   borderColor="rgb(0 0 0 / 0%) !important"
-                  {...register("end_area", {
+                  {...register("endArea", {
                     required: true,
                     onChange: (e) => {
                       setEndArea(e.target.value);
@@ -150,7 +167,13 @@ export const FormBox = () => {
                       </option>
                     ))}
                 </Select>
-                {/*errors.end_area.type === 'required' && <Text>도착지역을 선택하세요</Text>*/}
+                <Box>
+                  {errors.endArea?.type === "required" && (
+                    <Text color="red" fontSize="12px">
+                      도착지역을 입력하세요
+                    </Text>
+                  )}
+                </Box>
               </VStack>
               <Box w="300px">
                 <DatePicker
